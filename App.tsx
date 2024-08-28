@@ -6,43 +6,52 @@ import {
 	TouchableOpacity,
 	View
 } from "react-native";
+import AddItemModal from "./src/components/AddItemModal";
 import { COLORS } from "./src/styles/colors";
 
 const App = () => {
-	const [focusedSection, setFocusedSection] = useState<string>("");
-	const [newItem, setNewItem] = useState<string>("");
+	const [focusedSection, setFocusedSection] = useState("");
+	const [isModalVisible, setIsModalVisible] = useState(false);
+	const [newItem, setNewItem] = useState("");
 	const [oldItems, setOldItems] = useState<String[]>([]);
 
 	return (
 		<View style={styles.container}>
-			<Pressable
-				onPress={() => setFocusedSection("new")}
+			<View
 				style={[
 					styles.newSection, // Don't move; must come before conditional
 					styles.section,
 					focusedSection === "new" && styles.focused
 				]}
 			>
-				{focusedSection === "new" ? (
-					<View
-						style={{
-							alignItems: "center",
-							justifyContent: "center"
-						}}
-					>
-						<Text style={styles.newItem}>{newItem}</Text>
-						<TouchableOpacity style={styles.button}>
-							<Text style={styles.buttonText}>
-								{newItem ? "Change" : "Add"}
-							</Text>
-						</TouchableOpacity>
-					</View>
-				) : (
-					<Text style={[styles.newText, styles.sectionText]}>
-						New
-					</Text>
-				)}
-			</Pressable>
+				<Pressable onPress={() => setFocusedSection("new")}>
+					{focusedSection === "new" ? (
+						<View style={styles.innerNew}>
+							<Text style={styles.newItem}>{newItem}</Text>
+							<TouchableOpacity
+								onPress={() => setIsModalVisible(true)}
+								style={styles.button}
+							>
+								<Text style={styles.buttonText}>
+									{newItem ? "Change" : "Add"}
+								</Text>
+							</TouchableOpacity>
+						</View>
+					) : (
+						<Text style={[styles.newText, styles.sectionText]}>
+							New
+						</Text>
+					)}
+				</Pressable>
+				{isModalVisible ? (
+					<AddItemModal
+						newItem={newItem}
+						setIsModalVisible={setIsModalVisible}
+						setNewItem={setNewItem}
+						visibility={isModalVisible}
+					/>
+				) : null}
+			</View>
 			<Pressable
 				onPress={() => setFocusedSection("old")}
 				style={[
@@ -78,7 +87,8 @@ const styles = StyleSheet.create({
 	buttonText: { color: COLORS.lightBlue, fontSize: 16, fontWeight: "bold" },
 	container: { flex: 1, flexDirection: "column", width: "100%" },
 	focused: { flex: 4 },
-	newItem: { marginTop: 12, fontSize: 16 },
+	innerNew: { alignItems: "center", justifyContent: "center" },
+	newItem: { marginTop: 12, fontSize: 24 },
 	newSection: { backgroundColor: COLORS.lightBlue },
 	newText: { color: COLORS.darkBlue },
 	oldSection: { backgroundColor: COLORS.darkBlue },
