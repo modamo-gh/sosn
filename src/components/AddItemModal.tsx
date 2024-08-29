@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
 	Modal,
 	StyleSheet,
@@ -11,17 +11,23 @@ import { COLORS } from "../styles/colors";
 
 type AddItemModalProps = {
 	newItem: string;
+	oldItems: String[];
 	setIsModalVisible: (a: boolean) => void;
 	setNewItem: (a: string) => void;
+	setOldItems: (a: String[]) => void;
 	visibility: boolean;
 };
 
 const AddItemModal: React.FC<AddItemModalProps> = ({
 	newItem,
+	oldItems,
 	setIsModalVisible,
 	setNewItem,
+	setOldItems,
 	visibility
 }) => {
+    const [inputText, setInputText] = useState("");
+
 	return (
 		<View>
 			<Modal
@@ -32,19 +38,26 @@ const AddItemModal: React.FC<AddItemModalProps> = ({
 			>
 				<View style={styles.innerModalContainer}>
 					<TextInput
-						onChangeText={(text) => setNewItem(text)}
+						onChangeText={(text) => setInputText(text)}
 						placeholder="Enter Your New Item"
 						placeholderTextColor={COLORS.lightBlue}
 						style={styles.textInput}
-						value={newItem}
+						value={inputText}
 					/>
-					<TouchableOpacity style={styles.button}>
-						<Text
-							onPress={() => setIsModalVisible(false)}
-							style={styles.buttonText}
-						>
-							Submit
-						</Text>
+					<TouchableOpacity
+						onPress={() => {
+                            if(newItem){
+                                const oldItemsClone = [...oldItems];
+								oldItemsClone.push(newItem);
+								setOldItems(oldItemsClone);
+                            }
+                            
+                            setNewItem(inputText);
+							setIsModalVisible(false);
+						}}
+						style={styles.button}
+					>
+						<Text style={styles.buttonText}>Submit</Text>
 					</TouchableOpacity>
 				</View>
 			</Modal>
@@ -73,7 +86,7 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		marginHorizontal: "10%",
 		marginTop: "60%",
-		width: "80%",
+		width: "80%"
 	},
 	textInput: {
 		backgroundColor: COLORS.darkBlue,
@@ -81,7 +94,7 @@ const styles = StyleSheet.create({
 		color: COLORS.lightBlue,
 		height: 48,
 		paddingLeft: 8,
-		width: "80%",
+		width: "80%"
 	}
 });
 

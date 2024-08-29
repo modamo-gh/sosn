@@ -24,7 +24,10 @@ const App = () => {
 					focusedSection === "new" && styles.focused
 				]}
 			>
-				<Pressable onPress={() => setFocusedSection("new")}>
+				<Pressable
+					style={styles.pressable}
+					onPress={() => setFocusedSection("new")}
+				>
 					{focusedSection === "new" ? (
 						<View style={styles.innerNew}>
 							<Text style={styles.newItem}>{newItem}</Text>
@@ -46,8 +49,10 @@ const App = () => {
 				{isModalVisible ? (
 					<AddItemModal
 						newItem={newItem}
+						oldItems={oldItems}
 						setIsModalVisible={setIsModalVisible}
 						setNewItem={setNewItem}
+						setOldItems={setOldItems}
 						visibility={isModalVisible}
 					/>
 				) : null}
@@ -61,7 +66,7 @@ const App = () => {
 				]}
 			>
 				{focusedSection === "old" ? (
-					<Text>
+					<Text style={[styles.oldText, styles.sectionText]}>
 						{oldItems[Math.floor(Math.random() * oldItems.length)]}
 					</Text>
 				) : (
@@ -93,6 +98,14 @@ const styles = StyleSheet.create({
 	newText: { color: COLORS.darkBlue },
 	oldSection: { backgroundColor: COLORS.darkBlue },
 	oldText: { color: COLORS.lightBlue },
+	pressable: {
+		alignItems: "center",
+		borderColor: "black",
+		borderWidth: 1,
+		flex: 1,
+		justifyContent: "center",
+		width: "100%"
+	},
 	section: { alignItems: "center", flex: 1, justifyContent: "center" },
 	sectionText: { fontSize: 24, fontWeight: "bold" }
 });
