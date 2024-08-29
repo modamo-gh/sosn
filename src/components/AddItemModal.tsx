@@ -26,7 +26,7 @@ const AddItemModal: React.FC<AddItemModalProps> = ({
 	setOldItems,
 	visibility
 }) => {
-    const [inputText, setInputText] = useState("");
+	const [inputText, setInputText] = useState("");
 
 	return (
 		<View>
@@ -44,21 +44,29 @@ const AddItemModal: React.FC<AddItemModalProps> = ({
 						style={styles.textInput}
 						value={inputText}
 					/>
-					<TouchableOpacity
-						onPress={() => {
-                            if(newItem){
-                                const oldItemsClone = [...oldItems];
-								oldItemsClone.push(newItem);
-								setOldItems(oldItemsClone);
-                            }
-                            
-                            setNewItem(inputText);
-							setIsModalVisible(false);
-						}}
-						style={styles.button}
-					>
-						<Text style={styles.buttonText}>Submit</Text>
-					</TouchableOpacity>
+					<View style={styles.buttonContainer}>
+						<TouchableOpacity
+							onPress={() => setIsModalVisible(false)}
+							style={[styles.button, {backgroundColor: COLORS.lightBlue}]}
+						>
+							<Text style={[styles.buttonText, {color: COLORS.darkBlue}]}>Cancel</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							onPress={() => {
+								if (newItem) {
+									const oldItemsClone = [...oldItems];
+									oldItemsClone.push(newItem);
+									setOldItems(oldItemsClone);
+								}
+
+								setNewItem(inputText);
+								setIsModalVisible(false);
+							}}
+							style={[styles.button, {backgroundColor: COLORS.darkBlue}]}
+						>
+							<Text style={[styles.buttonText, {color: COLORS.lightBlue}]}>Submit</Text>
+						</TouchableOpacity>
+					</View>
 				</View>
 			</Modal>
 		</View>
@@ -68,14 +76,18 @@ const AddItemModal: React.FC<AddItemModalProps> = ({
 const styles = StyleSheet.create({
 	button: {
 		alignItems: "center",
-		backgroundColor: COLORS.darkBlue,
 		borderRadius: 5,
 		height: 48,
 		justifyContent: "center",
 		marginTop: 12,
 		width: 88
 	},
-	buttonText: { color: COLORS.lightBlue, fontSize: 16, fontWeight: "bold" },
+	buttonContainer: {
+		flexDirection: "row",
+		width: "80%",
+		justifyContent: "space-between"
+	},
+	buttonText: {fontSize: 16, fontWeight: "bold" },
 	innerModalContainer: {
 		alignItems: "center",
 		backgroundColor: COLORS.mediumBlue,
