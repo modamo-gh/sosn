@@ -8,6 +8,7 @@ import {
 import { COLORS } from "../styles/colors";
 import React, { useState } from "react";
 import ItemCollection from "../models/ItemCollection";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type HomeScreenProps = {
 	collections: ItemCollection[];
@@ -36,7 +37,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
 				value={inputText}
 			/>
 			<TouchableOpacity
-				onPress={() => {
+				onPress={async () => {
 					if (
 						!collections.find(
 							(collection) => collection.name === inputText
@@ -47,6 +48,11 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
 
 						collectionsClone.push(collection);
 						setCollections(collectionsClone);
+                        try {
+                            await AsyncStorage.setItem("collections", JSON.stringify(collectionsClone))
+                        } catch (error) {
+                            console.error("Something went wrong saving collection:", error)
+                        }
 					}
 
                     setInputText("");

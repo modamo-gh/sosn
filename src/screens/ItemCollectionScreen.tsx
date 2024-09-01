@@ -9,7 +9,7 @@ import {
 import AddItemModal from "../components/AddItemModal";
 import { COLORS } from "../styles/colors";
 
-const ItemGroup = () => {
+const ItemCollectionScreen = () => {
     const [focusedSection, setFocusedSection] = useState("");
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [newItem, setNewItem] = useState("");
@@ -110,4 +110,4 @@ const styles = StyleSheet.create({
     sectionText: { fontSize: 24, fontWeight: "bold" }
 });
 
-export default ItemGroup;
+export default ItemCollectionScreen;

@@ -1,15 +1,28 @@
-import ItemGroup from "./src/screens/ItemCollectionScreen";
-import "react-native-gesture-handler";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
-import HomeScreen from "./src/screens/HomeScreen";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import "react-native-gesture-handler";
 import ItemCollection from "./src/models/ItemCollection";
+import HomeScreen from "./src/screens/HomeScreen";
+import ItemCollectionScreen from "./src/screens/ItemCollectionScreen";
 
 const Drawer = createDrawerNavigator();
 
 const App = () => {
 	const [collections, setCollections] = useState<ItemCollection[]>([]);
+
+	useEffect(() => {
+		const fetchCollections = async () => {
+			const storedCollections = await AsyncStorage.getItem("collections");
+
+			if (storedCollections) {
+				setCollections(JSON.parse(storedCollections));
+			}
+		};
+
+		fetchCollections();
+	}, []);
 
 	return (
 		<NavigationContainer>
@@ -25,9 +38,9 @@ const App = () => {
 				</Drawer.Screen>
 				{collections.map((collection) => (
 					<Drawer.Screen
+						component={ItemCollectionScreen}
 						key={collection.name}
 						name={collection.name}
-						component={ItemGroup}
 					/>
 				))}
 			</Drawer.Navigator>
