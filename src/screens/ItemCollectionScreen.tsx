@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
     Pressable,
     StyleSheet,
@@ -8,12 +8,17 @@ import {
 } from "react-native";
 import AddItemModal from "../components/AddItemModal";
 import { COLORS } from "../styles/colors";
+import ItemCollection from "../models/ItemCollection";
 
-const ItemCollectionScreen = () => {
+type ItemCollectionScreenProps = {
+    collection: ItemCollection;
+    updateCollection: (a: ItemCollection) => void;
+}
+
+const ItemCollectionScreen: React.FC<ItemCollectionScreenProps> = ({collection, updateCollection}) => {
     const [focusedSection, setFocusedSection] = useState("");
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [newItem, setNewItem] = useState("");
-    const [oldItems, setOldItems] = useState<String[]>([]);
+    const [itemCollection, setItemCollection] = useState(collection);
 
     return (
         <View style={styles.container}>
@@ -30,13 +35,13 @@ const ItemCollectionScreen = () => {
                 >
                     {focusedSection === "new" ? (
                         <View style={styles.innerNew}>
-                            <Text style={styles.newItem}>{newItem}</Text>
+                            <Text style={styles.newItem}>{itemCollection.newItem}</Text>
                             <TouchableOpacity
                                 onPress={() => setIsModalVisible(true)}
                                 style={styles.button}
                             >
                                 <Text style={styles.buttonText}>
-                                    {newItem ? "Change" : "Add"}
+                                    {itemCollection.newItem ? "Change" : "Add"}
                                 </Text>
                             </TouchableOpacity>
                         </View>
@@ -48,11 +53,12 @@ const ItemCollectionScreen = () => {
                 </Pressable>
                 {isModalVisible ? (
                     <AddItemModal
-                        newItem={newItem}
-                        oldItems={oldItems}
+                        itemCollection={itemCollection}
+                        setItemCollection={updatedCollection => {
+                            setItemCollection(updatedCollection);
+                            updateCollection(itemCollection);
+                        }}
                         setIsModalVisible={setIsModalVisible}
-                        setNewItem={setNewItem}
-                        setOldItems={setOldItems}
                         visibility={isModalVisible}
                     />
                 ) : null}
@@ -67,7 +73,7 @@ const ItemCollectionScreen = () => {
             >
                 {focusedSection === "old" ? (
                     <Text style={[styles.oldText, styles.sectionText]}>
-                        {oldItems[Math.floor(Math.random() * oldItems.length)]}
+                        {itemCollection.oldItems[Math.floor(Math.random() * itemCollection.oldItems.length)]}
                     </Text>
                 ) : (
                     <Text style={[styles.oldText, styles.sectionText]}>

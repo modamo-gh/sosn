@@ -8,22 +8,19 @@ import {
 	View
 } from "react-native";
 import { COLORS } from "../styles/colors";
+import ItemCollection from "../models/ItemCollection";
 
 type AddItemModalProps = {
-	newItem: string;
-	oldItems: String[];
+	itemCollection: ItemCollection;
 	setIsModalVisible: (a: boolean) => void;
-	setNewItem: (a: string) => void;
-	setOldItems: (a: String[]) => void;
+	setItemCollection: (a: ItemCollection) => void;
 	visibility: boolean;
 };
 
 const AddItemModal: React.FC<AddItemModalProps> = ({
-	newItem,
-	oldItems,
+	itemCollection,
 	setIsModalVisible,
-	setNewItem,
-	setOldItems,
+	setItemCollection,
 	visibility
 }) => {
 	const [inputText, setInputText] = useState("");
@@ -53,13 +50,13 @@ const AddItemModal: React.FC<AddItemModalProps> = ({
 						</TouchableOpacity>
 						<TouchableOpacity
 							onPress={() => {
-								if (newItem) {
-									const oldItemsClone = [...oldItems];
-									oldItemsClone.push(newItem);
-									setOldItems(oldItemsClone);
+								if (itemCollection.newItem) {
+									const oldItemsClone = [...itemCollection.oldItems];
+									oldItemsClone.push(itemCollection.newItem);
+									setItemCollection({...itemCollection, oldItems: oldItemsClone})
 								}
 
-								setNewItem(inputText);
+								setItemCollection({...itemCollection, newItem: inputText})
 								setIsModalVisible(false);
 							}}
 							style={[styles.button, {backgroundColor: COLORS.darkBlue}]}

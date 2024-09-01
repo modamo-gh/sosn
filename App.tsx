@@ -12,17 +12,22 @@ const Drawer = createDrawerNavigator();
 const App = () => {
 	const [collections, setCollections] = useState<ItemCollection[]>([]);
 
-	useEffect(() => {
-		const fetchCollections = async () => {
-			const storedCollections = await AsyncStorage.getItem("collections");
+	const fetchCollections = async () => {
+		const storedCollections = await AsyncStorage.getItem("collections");
 
-			if (storedCollections) {
-				setCollections(JSON.parse(storedCollections));
-			}
-		};
+		if (storedCollections) {
+			setCollections(JSON.parse(storedCollections));
+		}
+	};
 
-		fetchCollections();
-	}, []);
+	const updatedCollection = async (updatedCollection: ItemCollection) => {
+		const updatedCollections = collections.map(collection => collection.name === updatedCollection.name ? updatedCollection : collection);
+
+		setCollections(updatedCollections);
+		await AsyncStorage.setItem("collections", JSON.stringify(updatedCollections))
+	}
+
+	useEffect(() => { fetchCollections() }, []);
 
 	return (
 		<NavigationContainer>
@@ -38,10 +43,11 @@ const App = () => {
 				</Drawer.Screen>
 				{collections.map((collection) => (
 					<Drawer.Screen
-						component={ItemCollectionScreen}
 						key={collection.name}
 						name={collection.name}
-					/>
+					>
+						{() => <ItemCollectionScreen collection={collection} updateCollection={updatedCollection} />}
+					</Drawer.Screen>
 				))}
 			</Drawer.Navigator>
 		</NavigationContainer>
