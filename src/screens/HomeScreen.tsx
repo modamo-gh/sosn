@@ -44,18 +44,27 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
 						)
 					) {
 						const collection = new ItemCollection(inputText);
+						console.log(collection);
 						const collectionsClone = [...collections];
 
 						collectionsClone.push(collection);
+
 						setCollections(collectionsClone);
-                        try {
-                            await AsyncStorage.setItem("collections", JSON.stringify(collectionsClone))
-                        } catch (error) {
-                            console.error("Something went wrong saving collection:", error)
-                        }
+
+						try {
+							await AsyncStorage.setItem(
+								"collections",
+								JSON.stringify(collectionsClone)
+							);
+						} catch (error) {
+							console.error(
+								"Something went wrong saving collection:",
+								error
+							);
+						}
 					}
 
-                    setInputText("");
+					setInputText("");
 				}}
 				style={[styles.button, { marginTop: 12 }]}
 			>

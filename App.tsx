@@ -20,14 +20,23 @@ const App = () => {
 		}
 	};
 
-	const updatedCollection = async (updatedCollection: ItemCollection) => {
-		const updatedCollections = collections.map(collection => collection.name === updatedCollection.name ? updatedCollection : collection);
+	const updateCollection = async (updatedCollection: ItemCollection) => {
+		const updatedCollections = collections.map((collection) =>
+			collection.name === updatedCollection.name
+				? updatedCollection
+				: collection
+		);
 
 		setCollections(updatedCollections);
-		await AsyncStorage.setItem("collections", JSON.stringify(updatedCollections))
-	}
+		await AsyncStorage.setItem(
+			"collections",
+			JSON.stringify(updatedCollections)
+		);
+	};
 
-	useEffect(() => { fetchCollections() }, []);
+	useEffect(() => {
+		fetchCollections();
+	}, []);
 
 	return (
 		<NavigationContainer>
@@ -46,7 +55,12 @@ const App = () => {
 						key={collection.name}
 						name={collection.name}
 					>
-						{() => <ItemCollectionScreen collection={collection} updateCollection={updatedCollection} />}
+						{() => (
+							<ItemCollectionScreen
+								collection={collection}
+								updateCollection={updateCollection}
+							/>
+						)}
 					</Drawer.Screen>
 				))}
 			</Drawer.Navigator>

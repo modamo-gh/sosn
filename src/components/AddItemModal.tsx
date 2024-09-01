@@ -14,6 +14,7 @@ type AddItemModalProps = {
 	itemCollection: ItemCollection;
 	setIsModalVisible: (a: boolean) => void;
 	setItemCollection: (a: ItemCollection) => void;
+	updateCollection: (a: ItemCollection) => void;
 	visibility: boolean;
 };
 
@@ -21,6 +22,7 @@ const AddItemModal: React.FC<AddItemModalProps> = ({
 	itemCollection,
 	setIsModalVisible,
 	setItemCollection,
+	updateCollection,
 	visibility
 }) => {
 	const [inputText, setInputText] = useState("");
@@ -44,24 +46,60 @@ const AddItemModal: React.FC<AddItemModalProps> = ({
 					<View style={styles.buttonContainer}>
 						<TouchableOpacity
 							onPress={() => setIsModalVisible(false)}
-							style={[styles.button, {backgroundColor: COLORS.lightBlue}]}
+							style={[
+								styles.button,
+								{ backgroundColor: COLORS.lightBlue }
+							]}
 						>
-							<Text style={[styles.buttonText, {color: COLORS.darkBlue}]}>Cancel</Text>
+							<Text
+								style={[
+									styles.buttonText,
+									{ color: COLORS.darkBlue }
+								]}
+							>
+								Cancel
+							</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
 							onPress={() => {
+								const updatedCollection = new ItemCollection(
+									itemCollection.name
+								);
+
 								if (itemCollection.newItem) {
-									const oldItemsClone = [...itemCollection.oldItems];
+									const oldItemsClone = [
+										...itemCollection.oldItems
+									];
+
 									oldItemsClone.push(itemCollection.newItem);
-									setItemCollection({...itemCollection, oldItems: oldItemsClone})
+
+									updatedCollection.newItem =
+										itemCollection.newItem;
+									updatedCollection.oldItems = oldItemsClone;
+
+									setItemCollection(updatedCollection);
 								}
 
-								setItemCollection({...itemCollection, newItem: inputText})
+								updatedCollection.newItem = inputText;
+
+								setItemCollection(updatedCollection);
+								updateCollection(updatedCollection);
+
 								setIsModalVisible(false);
 							}}
-							style={[styles.button, {backgroundColor: COLORS.darkBlue}]}
+							style={[
+								styles.button,
+								{ backgroundColor: COLORS.darkBlue }
+							]}
 						>
-							<Text style={[styles.buttonText, {color: COLORS.lightBlue}]}>Submit</Text>
+							<Text
+								style={[
+									styles.buttonText,
+									{ color: COLORS.lightBlue }
+								]}
+							>
+								Submit
+							</Text>
 						</TouchableOpacity>
 					</View>
 				</View>
@@ -84,7 +122,7 @@ const styles = StyleSheet.create({
 		width: "80%",
 		justifyContent: "space-between"
 	},
-	buttonText: {fontSize: 16, fontWeight: "bold" },
+	buttonText: { fontSize: 16, fontWeight: "bold" },
 	innerModalContainer: {
 		alignItems: "center",
 		backgroundColor: COLORS.mediumBlue,
