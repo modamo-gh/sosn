@@ -1,5 +1,4 @@
 import {
-	Modal,
 	StyleSheet,
 	Text,
 	TextInput,
@@ -7,9 +6,18 @@ import {
 	View
 } from "react-native";
 import { COLORS } from "../styles/colors";
-import { useState } from "react";
+import React, { useState } from "react";
+import ItemCollection from "../models/ItemCollection";
 
-const HomeScreen = () => {
+type HomeScreenProps = {
+	collections: ItemCollection[];
+	setCollections: (a: ItemCollection[]) => void;
+};
+
+const HomeScreen: React.FC<HomeScreenProps> = ({
+	collections,
+	setCollections
+}) => {
 	const [inputText, setInputText] = useState("");
 
 	return (
@@ -27,7 +35,24 @@ const HomeScreen = () => {
 				style={styles.textInput}
 				value={inputText}
 			/>
-			<TouchableOpacity style={[styles.button, { marginTop: 12 }]}>
+			<TouchableOpacity
+				onPress={() => {
+					if (
+						!collections.find(
+							(collection) => collection.name === inputText
+						)
+					) {
+						const collection = new ItemCollection(inputText);
+						const collectionsClone = [...collections];
+
+						collectionsClone.push(collection);
+						setCollections(collectionsClone);
+					}
+
+                    setInputText("");
+				}}
+				style={[styles.button, { marginTop: 12 }]}
+			>
 				<Text style={[styles.text, { fontWeight: "bold" }]}>
 					Submit
 				</Text>

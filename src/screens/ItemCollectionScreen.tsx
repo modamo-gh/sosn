@@ -6,7 +6,7 @@ import {
     TouchableOpacity,
     View
 } from "react-native";
-import AddItemModal from "./AddItemModal";
+import AddItemModal from "../components/AddItemModal";
 import { COLORS } from "../styles/colors";
 
 const ItemGroup = () => {
