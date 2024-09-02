@@ -9,6 +9,7 @@ import {
 import AddItemModal from "../components/AddItemModal";
 import { COLORS } from "../styles/colors";
 import ItemCollection from "../models/ItemCollection";
+import Item from "../components/Item";
 
 type ItemCollectionScreenProps = {
 	collection: ItemCollection;
@@ -38,9 +39,7 @@ const ItemCollectionScreen: React.FC<ItemCollectionScreenProps> = ({
 				>
 					{focusedSection === "new" ? (
 						<View style={styles.innerNew}>
-							<Text style={styles.newItem}>
-								{itemCollection.newItem}
-							</Text>
+							<Item value={itemCollection.newItem} style={styles.newItem} />
 							<TouchableOpacity
 								onPress={() => setIsModalVisible(true)}
 								style={styles.button}
@@ -75,16 +74,17 @@ const ItemCollectionScreen: React.FC<ItemCollectionScreenProps> = ({
 				]}
 			>
 				{focusedSection === "old" ? (
-					<Text style={[styles.oldText, styles.sectionText]}>
-						{
+					<Item
+						style={[styles.oldText, styles.sectionText]}
+						value={
 							itemCollection.oldItems[
-								Math.floor(
-									Math.random() *
-										itemCollection.oldItems.length
-								)
+							Math.floor(
+								Math.random() *
+								itemCollection.oldItems.length
+							)
 							]
 						}
-					</Text>
+					/>
 				) : (
 					<Text style={[styles.oldText, styles.sectionText]}>
 						Old
@@ -116,8 +116,6 @@ const styles = StyleSheet.create({
 	oldText: { color: COLORS.lightBlue },
 	pressable: {
 		alignItems: "center",
-		borderColor: "black",
-		borderWidth: 1,
 		flex: 1,
 		justifyContent: "center",
 		width: "100%"

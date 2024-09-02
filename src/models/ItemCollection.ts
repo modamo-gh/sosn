@@ -1,7 +1,7 @@
 class ItemCollection {
     name: string;
     newItem: string;
-    oldItems: String[];
+    oldItems: string[];
 
     constructor(name: string){
         this.name = name;
