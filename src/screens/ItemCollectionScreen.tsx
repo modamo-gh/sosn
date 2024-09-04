@@ -39,7 +39,10 @@ const ItemCollectionScreen: React.FC<ItemCollectionScreenProps> = ({
 				>
 					{focusedSection === "new" ? (
 						<View style={styles.innerNew}>
-							<Item value={itemCollection.newItem} style={styles.newItem} />
+							<Item
+								value={itemCollection.newItem}
+								isNew={true}
+							/>
 							<TouchableOpacity
 								onPress={() => setIsModalVisible(true)}
 								style={styles.button}
@@ -75,13 +78,13 @@ const ItemCollectionScreen: React.FC<ItemCollectionScreenProps> = ({
 			>
 				{focusedSection === "old" ? (
 					<Item
-						style={[styles.oldText, styles.sectionText]}
+						isNew={false}
 						value={
 							itemCollection.oldItems[
-							Math.floor(
-								Math.random() *
-								itemCollection.oldItems.length
-							)
+								Math.floor(
+									Math.random() *
+										itemCollection.oldItems.length
+								)
 							]
 						}
 					/>
@@ -109,7 +112,6 @@ const styles = StyleSheet.create({
 	container: { flex: 1, flexDirection: "column", width: "100%" },
 	focused: { flex: 4 },
 	innerNew: { alignItems: "center", justifyContent: "center" },
-	newItem: { marginTop: 12, fontSize: 24 },
 	newSection: { backgroundColor: COLORS.lightBlue },
 	newText: { color: COLORS.darkBlue },
 	oldSection: { backgroundColor: COLORS.darkBlue },
