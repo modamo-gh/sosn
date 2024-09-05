@@ -1,13 +1,17 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import { COLORS } from "../styles/colors";
+import ItemCollection from "../models/ItemCollection";
 
 type ItemProps = {
+    index?: number;
     isNew: boolean;
+    itemCollection: ItemCollection;
+    setItemCollection: (a: ItemCollection) => void;
     value: string;
 };
 
-const Item: React.FC<ItemProps> = ({ value, isNew }) => {
+const Item: React.FC<ItemProps> = ({index, isNew, itemCollection, setItemCollection, value }) => {
     return (
         <View
             style={[
@@ -30,7 +34,18 @@ const Item: React.FC<ItemProps> = ({ value, isNew }) => {
                         styles.icon,
                         isNew ? styles.newLabel : styles.oldLabel
                     ]}
-                    onPress={() => console.log("press")}
+                    onPress={() => {
+                        const itemCollectionClone = {...itemCollection};
+
+                        if(isNew){
+                            itemCollectionClone.newItem = "";
+                        }
+                        else{
+                            itemCollectionClone.oldItems.splice(index as number, 1);
+                        }
+
+                        setItemCollection(itemCollectionClone);
+                    }}
                 />
             </TouchableOpacity>
         </View>

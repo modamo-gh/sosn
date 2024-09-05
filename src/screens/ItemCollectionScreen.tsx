@@ -23,6 +23,17 @@ const ItemCollectionScreen: React.FC<ItemCollectionScreenProps> = ({
 	const [focusedSection, setFocusedSection] = useState("");
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [itemCollection, setItemCollection] = useState(collection);
+	const [index, setIndex] = useState(0);
+
+	const getRandomIndex = () => {
+		const randomIndex = Math.floor(
+			Math.random() * itemCollection.oldItems.length
+		);
+
+		setIndex(randomIndex);
+
+		return randomIndex;
+	};
 
 	return (
 		<View style={styles.container}>
@@ -39,10 +50,14 @@ const ItemCollectionScreen: React.FC<ItemCollectionScreenProps> = ({
 				>
 					{focusedSection === "new" ? (
 						<View style={styles.innerNew}>
-							<Item
-								value={itemCollection.newItem}
-								isNew={true}
-							/>
+							{itemCollection.newItem && (
+								<Item
+									value={itemCollection.newItem}
+									isNew={true}
+									itemCollection={itemCollection}
+									setItemCollection={setItemCollection}
+								/>
+							)}
 							<TouchableOpacity
 								onPress={() => setIsModalVisible(true)}
 								style={styles.button}
@@ -69,7 +84,10 @@ const ItemCollectionScreen: React.FC<ItemCollectionScreenProps> = ({
 				) : null}
 			</View>
 			<Pressable
-				onPress={() => setFocusedSection("old")}
+				onPress={() => {
+					setFocusedSection("old");
+					getRandomIndex();
+				}}
 				style={[
 					styles.oldSection, // Don't move; must come before conditional
 					styles.section,
@@ -77,17 +95,18 @@ const ItemCollectionScreen: React.FC<ItemCollectionScreenProps> = ({
 				]}
 			>
 				{focusedSection === "old" ? (
-					<Item
-						isNew={false}
-						value={
-							itemCollection.oldItems[
-								Math.floor(
-									Math.random() *
-										itemCollection.oldItems.length
-								)
-							]
-						}
-					/>
+					itemCollection.oldItems.length > 0 &&
+					itemCollection.oldItems.find(
+						(oldItem) => oldItem === itemCollection.oldItems[index]
+					) && (
+						<Item
+							index={index}
+							isNew={false}
+							itemCollection={itemCollection}
+							setItemCollection={setItemCollection}
+							value={itemCollection.oldItems[index]}
+						/>
+					)
 				) : (
 					<Text style={[styles.oldText, styles.sectionText]}>
 						Old
