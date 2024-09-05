@@ -6,6 +6,8 @@ import "react-native-gesture-handler";
 import ItemCollection from "./src/models/ItemCollection";
 import HomeScreen from "./src/screens/HomeScreen";
 import ItemCollectionScreen from "./src/screens/ItemCollectionScreen";
+import Icon from "react-native-vector-icons/Feather";
+import { TouchableOpacity } from "react-native";
 
 const Drawer = createDrawerNavigator();
 
@@ -50,10 +52,38 @@ const App = () => {
 						/>
 					)}
 				</Drawer.Screen>
-				{collections.map((collection) => (
+				{collections.map((collection, index) => (
 					<Drawer.Screen
 						key={collection.name}
 						name={collection.name}
+						options={{
+							headerRight: () => (
+								<TouchableOpacity
+									onPress={async () => {
+										const collectionsClone = [
+											...collections
+										];
+
+										collectionsClone.splice(index, 1);
+										setCollections(collectionsClone);
+										await AsyncStorage.setItem(
+											"collections",
+											JSON.stringify(collectionsClone)
+										);
+									}}
+								>
+									<Icon
+										name="trash-2"
+										style={{
+											alignItems: "center",
+											justifyContent: "center",
+											right: 16,
+											fontSize: 22
+										}}
+									/>
+								</TouchableOpacity>
+							)
+						}}
 					>
 						{() => (
 							<ItemCollectionScreen
