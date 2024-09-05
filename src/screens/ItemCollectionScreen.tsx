@@ -55,7 +55,10 @@ const ItemCollectionScreen: React.FC<ItemCollectionScreenProps> = ({
 									value={itemCollection.newItem}
 									isNew={true}
 									itemCollection={itemCollection}
-									setItemCollection={setItemCollection}
+									setItemCollection={(collection) => {
+										setItemCollection(collection);
+										updateCollection(collection);
+									}}
 								/>
 							)}
 							<TouchableOpacity
@@ -76,7 +79,10 @@ const ItemCollectionScreen: React.FC<ItemCollectionScreenProps> = ({
 				{isModalVisible ? (
 					<AddItemModal
 						itemCollection={itemCollection}
-						setItemCollection={setItemCollection}
+						setItemCollection={(collection) => {
+							setItemCollection(collection);
+							updateCollection(collection);
+						}}
 						setIsModalVisible={setIsModalVisible}
 						updateCollection={updateCollection}
 						visibility={isModalVisible}
@@ -103,7 +109,10 @@ const ItemCollectionScreen: React.FC<ItemCollectionScreenProps> = ({
 							index={index}
 							isNew={false}
 							itemCollection={itemCollection}
-							setItemCollection={setItemCollection}
+							setItemCollection={(collection) => {
+								setItemCollection(collection);
+								updateCollection(collection);
+							}}
 							value={itemCollection.oldItems[index]}
 						/>
 					)
