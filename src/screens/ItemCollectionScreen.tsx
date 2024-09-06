@@ -65,9 +65,7 @@ const ItemCollectionScreen: React.FC<ItemCollectionScreenProps> = ({
 								onPress={() => setIsModalVisible(true)}
 								style={styles.button}
 							>
-								<Text style={styles.buttonText}>
-									{itemCollection.newItem ? "Change" : "Add"}
-								</Text>
+								<Text style={styles.buttonText}>Add New Item</Text>
 							</TouchableOpacity>
 						</View>
 					) : (
@@ -134,7 +132,8 @@ const styles = StyleSheet.create({
 		height: 48,
 		justifyContent: "center",
 		marginTop: 12,
-		width: 88
+		minWidth: 88,
+		paddingHorizontal: 8
 	},
 	buttonText: { color: COLORS.lightBlue, fontSize: 16, fontWeight: "bold" },
 	container: { flex: 1, flexDirection: "column", width: "100%" },
