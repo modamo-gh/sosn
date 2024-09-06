@@ -44,7 +44,6 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
 						)
 					) {
 						const collection = new ItemCollection(inputText);
-						console.log(collection);
 						const collectionsClone = [...collections];
 
 						collectionsClone.push(collection);

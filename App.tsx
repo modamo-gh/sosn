@@ -24,7 +24,7 @@ const App = () => {
 
 	const updateCollection = async (updatedCollection: ItemCollection) => {
 		const updatedCollections = collections.map((collection) =>
-			collection.name === updatedCollection.name
+			collection.id === updatedCollection.id
 				? updatedCollection
 				: collection
 		);
@@ -54,7 +54,7 @@ const App = () => {
 				</Drawer.Screen>
 				{collections.map((collection, index) => (
 					<Drawer.Screen
-						key={collection.name}
+						key={collection.id}
 						name={collection.name}
 						options={{
 							headerRight: () => (
