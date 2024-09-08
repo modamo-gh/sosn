@@ -21,9 +21,9 @@ const ItemCollectionScreen: React.FC<ItemCollectionScreenProps> = ({
 	updateCollection
 }) => {
 	const [focusedSection, setFocusedSection] = useState("");
+	const [index, setIndex] = useState(0);
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [itemCollection, setItemCollection] = useState(collection);
-	const [index, setIndex] = useState(0);
 
 	const getRandomIndex = () => {
 		const randomIndex = Math.floor(

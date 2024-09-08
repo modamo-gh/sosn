@@ -1,17 +1,21 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { TouchableOpacity } from "react-native";
+import { ActionSheetRef } from "react-native-actions-sheet";
 import "react-native-gesture-handler";
+import Icon from "react-native-vector-icons/Feather";
+import ListOptionsActionSheet from "./src/components/ListOptionsActionSheet";
 import ItemCollection from "./src/models/ItemCollection";
 import HomeScreen from "./src/screens/HomeScreen";
 import ItemCollectionScreen from "./src/screens/ItemCollectionScreen";
-import Icon from "react-native-vector-icons/Feather";
-import { TouchableOpacity } from "react-native";
 
 const Drawer = createDrawerNavigator();
 
 const App = () => {
+	const actionSheetRef = useRef<ActionSheetRef>(null);
+
 	const [collections, setCollections] = useState<ItemCollection[]>([]);
 
 	const fetchCollections = async () => {
@@ -59,21 +63,14 @@ const App = () => {
 						options={{
 							headerRight: () => (
 								<TouchableOpacity
-									onPress={async () => {
-										const collectionsClone = [
-											...collections
-										];
-
-										collectionsClone.splice(index, 1);
-										setCollections(collectionsClone);
-										await AsyncStorage.setItem(
-											"collections",
-											JSON.stringify(collectionsClone)
-										);
-									}}
+									onPress={() =>
+										actionSheetRef.current?.setModalVisible(
+											true
+										)
+									}
 								>
 									<Icon
-										name="trash-2"
+										name="more-horizontal"
 										style={{
 											alignItems: "center",
 											justifyContent: "center",
@@ -94,6 +91,8 @@ const App = () => {
 					</Drawer.Screen>
 				))}
 			</Drawer.Navigator>
+
+			<ListOptionsActionSheet actionSheetRef={actionSheetRef} />
 		</NavigationContainer>
 	);
 };
