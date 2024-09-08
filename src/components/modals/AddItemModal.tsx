@@ -7,8 +7,8 @@ import {
 	TouchableOpacity,
 	View
 } from "react-native";
-import { COLORS } from "../styles/colors";
-import ItemCollection from "../models/ItemCollection";
+import { COLORS } from "../../styles/colors";
+import ItemCollection from "../../models/ItemCollection";
 
 type AddItemModalProps = {
 	itemCollection: ItemCollection;
@@ -65,6 +65,8 @@ const AddItemModal: React.FC<AddItemModalProps> = ({
 								const updatedCollection = new ItemCollection(
 									itemCollection.name
 								);
+
+								updatedCollection.id = itemCollection.id;
 
 								if (itemCollection.newItem) {
 									const oldItemsClone = [

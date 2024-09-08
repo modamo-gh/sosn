@@ -16,6 +16,7 @@ const Drawer = createDrawerNavigator();
 const App = () => {
 	const actionSheetRef = useRef<ActionSheetRef>(null);
 
+	const [currentCollection, setCurrentCollection] = useState<ItemCollection>();
 	const [collections, setCollections] = useState<ItemCollection[]>([]);
 
 	const fetchCollections = async () => {
@@ -63,10 +64,11 @@ const App = () => {
 						options={{
 							headerRight: () => (
 								<TouchableOpacity
-									onPress={() =>
+									onPress={() =>{
+										setCurrentCollection(collection);
 										actionSheetRef.current?.setModalVisible(
 											true
-										)
+										)}
 									}
 								>
 									<Icon
@@ -92,7 +94,7 @@ const App = () => {
 				))}
 			</Drawer.Navigator>
 
-			<ListOptionsActionSheet actionSheetRef={actionSheetRef} />
+			<ListOptionsActionSheet actionSheetRef={actionSheetRef} currentCollection={currentCollection} setCurrentCollection={setCurrentCollection} updateCollection={updateCollection}/>
 		</NavigationContainer>
 	);
 };

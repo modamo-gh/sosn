@@ -6,7 +6,7 @@ import {
 	TouchableOpacity,
 	View
 } from "react-native";
-import AddItemModal from "../components/AddItemModal";
+import AddItemModal from "../components/modals/AddItemModal";
 import { COLORS } from "../styles/colors";
 import ItemCollection from "../models/ItemCollection";
 import Item from "../components/Item";

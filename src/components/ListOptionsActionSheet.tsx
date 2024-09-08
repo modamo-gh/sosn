@@ -1,21 +1,36 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import ActionSheet, { ActionSheetRef } from "react-native-actions-sheet";
 import { COLORS } from "../styles/colors";
+import ItemCollection from "../models/ItemCollection";
+import { useState } from "react";
+import EditListNameModal from "./modals/EditListNameModal";
 
 type ListOptionsActionSheetProps = {
 	actionSheetRef: React.RefObject<ActionSheetRef>;
+	currentCollection: ItemCollection;
+	setCurrentCollection: (a: ItemCollection) => void;
+	updateCollection: (a: ItemCollection) => void;
 };
 
 const ListOptionsActionSheet: React.FC<ListOptionsActionSheetProps> = ({
-	actionSheetRef
+	actionSheetRef,
+	currentCollection,
+	setCurrentCollection,
+	updateCollection
 }) => {
+	const [isModalVisible, setIsModalVisible] = useState(false);
+
 	return (
 		<ActionSheet
 			containerStyle={styles.actionSheet}
 			ref={actionSheetRef}
 		>
 			<View>
-				<TouchableOpacity onPress={() => console.log("Edit name")}>
+				<TouchableOpacity
+					onPress={() => {
+						setIsModalVisible(true);
+					}}
+				>
 					<Text style={styles.option}>Edit List Name</Text>
 				</TouchableOpacity>
 				<TouchableOpacity onPress={() => console.log("Delete list")}>
@@ -29,6 +44,13 @@ const ListOptionsActionSheet: React.FC<ListOptionsActionSheetProps> = ({
 					<Text style={styles.option}>Cancel</Text>
 				</TouchableOpacity>
 			</View>
+			<EditListNameModal
+				itemCollection={currentCollection}
+				setIsModalVisible={setIsModalVisible}
+				setItemCollection={setCurrentCollection}
+				updateCollection={updateCollection}
+				visibility={isModalVisible}
+			/>
 		</ActionSheet>
 	);
 };
