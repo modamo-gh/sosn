@@ -10,13 +10,15 @@ import ListOptionsActionSheet from "./src/components/ListOptionsActionSheet";
 import ItemCollection from "./src/models/ItemCollection";
 import HomeScreen from "./src/screens/HomeScreen";
 import ItemCollectionScreen from "./src/screens/ItemCollectionScreen";
+import { COLORS } from "./src/styles/colors";
 
 const Drawer = createDrawerNavigator();
 
 const App = () => {
 	const actionSheetRef = useRef<ActionSheetRef>(null);
 
-	const [currentCollection, setCurrentCollection] = useState<ItemCollection>();
+	const [currentCollection, setCurrentCollection] =
+		useState<ItemCollection>();
 	const [collections, setCollections] = useState<ItemCollection[]>([]);
 
 	const fetchCollections = async () => {
@@ -47,7 +49,18 @@ const App = () => {
 
 	return (
 		<NavigationContainer>
-			<Drawer.Navigator initialRouteName="Home">
+			<Drawer.Navigator
+				initialRouteName="Home"
+				screenOptions={{
+					drawerActiveBackgroundColor: COLORS.lightBlue,
+					drawerActiveTintColor: COLORS.darkBlue,
+					drawerInactiveTintColor: COLORS.lightBlue,
+					drawerLabelStyle: { fontSize: 18 },
+					drawerStyle: { backgroundColor: COLORS.mediumBlue },
+					headerStyle: { backgroundColor: COLORS.mediumBlue },
+					headerTintColor: COLORS.lightBlue
+				}}
+			>
 				<Drawer.Screen name="Home">
 					{(props) => (
 						<HomeScreen
@@ -64,20 +77,21 @@ const App = () => {
 						options={{
 							headerRight: () => (
 								<TouchableOpacity
-									onPress={() =>{
+									onPress={() => {
 										setCurrentCollection(collection);
 										actionSheetRef.current?.setModalVisible(
 											true
-										)}
-									}
+										);
+									}}
 								>
 									<Icon
 										name="more-horizontal"
 										style={{
 											alignItems: "center",
+											color: COLORS.lightBlue,
+											fontSize: 22,
 											justifyContent: "center",
 											right: 16,
-											fontSize: 22
 										}}
 									/>
 								</TouchableOpacity>
@@ -93,8 +107,12 @@ const App = () => {
 					</Drawer.Screen>
 				))}
 			</Drawer.Navigator>
-
-			<ListOptionsActionSheet actionSheetRef={actionSheetRef} currentCollection={currentCollection} setCurrentCollection={setCurrentCollection} updateCollection={updateCollection}/>
+			<ListOptionsActionSheet
+				actionSheetRef={actionSheetRef}
+				currentCollection={currentCollection}
+				setCurrentCollection={setCurrentCollection}
+				updateCollection={updateCollection}
+			/>
 		</NavigationContainer>
 	);
 };
