@@ -65,7 +65,9 @@ const ItemCollectionScreen: React.FC<ItemCollectionScreenProps> = ({
 								onPress={() => setIsModalVisible(true)}
 								style={styles.button}
 							>
-								<Text style={styles.buttonText}>Add New Item</Text>
+								<Text style={styles.buttonText}>
+									Add New Item
+								</Text>
 							</TouchableOpacity>
 						</View>
 					) : (
@@ -99,20 +101,26 @@ const ItemCollectionScreen: React.FC<ItemCollectionScreenProps> = ({
 				]}
 			>
 				{focusedSection === "old" ? (
-					itemCollection.oldItems.length > 0 &&
-					itemCollection.oldItems.find(
-						(oldItem) => oldItem === itemCollection.oldItems[index]
-					) && (
-						<Item
-							index={index}
-							isNew={false}
-							itemCollection={itemCollection}
-							setItemCollection={(collection) => {
-								setItemCollection(collection);
-								updateCollection(collection);
-							}}
-							value={itemCollection.oldItems[index]}
-						/>
+					itemCollection.oldItems.length > 0 ? (
+						itemCollection.oldItems.find(
+							(oldItem) =>
+								oldItem === itemCollection.oldItems[index]
+						) && (
+							<Item
+								index={index}
+								isNew={false}
+								itemCollection={itemCollection}
+								setItemCollection={(collection) => {
+									setItemCollection(collection);
+									updateCollection(collection);
+								}}
+								value={itemCollection.oldItems[index]}
+							/>
+						)
+					) : (
+						<Text style={[styles.oldText, { fontSize: 24 }]}>
+							Old Items is currently empty
+						</Text>
 					)
 				) : (
 					<Text style={[styles.oldText, styles.sectionText]}>
