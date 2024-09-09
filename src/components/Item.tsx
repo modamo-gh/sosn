@@ -11,7 +11,13 @@ type ItemProps = {
     value: string;
 };
 
-const Item: React.FC<ItemProps> = ({index, isNew, itemCollection, setItemCollection, value }) => {
+const Item: React.FC<ItemProps> = ({
+    index,
+    isNew,
+    itemCollection,
+    setItemCollection,
+    value
+}) => {
     return (
         <View
             style={[
@@ -35,13 +41,22 @@ const Item: React.FC<ItemProps> = ({index, isNew, itemCollection, setItemCollect
                         isNew ? styles.newLabel : styles.oldLabel
                     ]}
                     onPress={() => {
-                        const itemCollectionClone = {...itemCollection};
+                        const itemCollectionClone = { ...itemCollection };
 
-                        if(isNew){
-                            itemCollectionClone.newItem = "";
-                        }
-                        else{
-                            itemCollectionClone.oldItems.splice(index as number, 1);
+                        if (isNew) {
+                            if (itemCollectionClone.oldItems.length) {
+                                const mostRecentOldItem =
+                                    itemCollectionClone.oldItems.pop();
+
+                                itemCollectionClone.newItem = mostRecentOldItem;
+                            } else {
+                                itemCollectionClone.newItem = "";
+                            }
+                        } else {
+                            itemCollectionClone.oldItems.splice(
+                                index as number,
+                                1
+                            );
                         }
 
                         setItemCollection(itemCollectionClone);
@@ -60,7 +75,7 @@ const styles = StyleSheet.create({
         height: 48,
         justifyContent: "center",
         marginBottom: 12,
-        minWidth: 176,
+        minWidth: 176
     },
     icon: { fontSize: 16, paddingHorizontal: 8 },
     newContainer: { backgroundColor: COLORS.darkBlue },
