@@ -109,7 +109,7 @@ const App = () => {
 			</Drawer.Navigator>
 			<ListOptionsActionSheet
 				actionSheetRef={actionSheetRef}
-				currentCollection={currentCollection}
+				currentCollection={currentCollection!}
 				setCurrentCollection={setCurrentCollection}
 				updateCollection={updateCollection}
 			/>

@@ -46,7 +46,7 @@ const Item: React.FC<ItemProps> = ({
                         if (isNew) {
                             if (itemCollectionClone.oldItems.length) {
                                 const mostRecentOldItem =
-                                    itemCollectionClone.oldItems.pop();
+                                    itemCollectionClone.oldItems.pop()!;
 
                                 itemCollectionClone.newItem = mostRecentOldItem;
                             } else {

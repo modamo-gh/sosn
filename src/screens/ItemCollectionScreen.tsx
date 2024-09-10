@@ -10,6 +10,7 @@ import AddItemModal from "../components/modals/AddItemModal";
 import { COLORS } from "../styles/colors";
 import ItemCollection from "../models/ItemCollection";
 import Item from "../components/Item";
+import { FlatList } from "react-native-gesture-handler";
 
 type ItemCollectionScreenProps = {
 	collection: ItemCollection;
@@ -106,16 +107,56 @@ const ItemCollectionScreen: React.FC<ItemCollectionScreenProps> = ({
 							(oldItem) =>
 								oldItem === itemCollection.oldItems[index]
 						) && (
-							<Item
-								index={index}
-								isNew={false}
-								itemCollection={itemCollection}
-								setItemCollection={(collection) => {
-									setItemCollection(collection);
-									updateCollection(collection);
-								}}
-								value={itemCollection.oldItems[index]}
-							/>
+							<View style={{ flex: 1, flexDirection: "row" }}>
+								<View
+									style={{
+										flex: 4,
+										justifyContent: "center",
+										alignItems: "center"
+									}}
+								>
+									<Item
+										index={index}
+										isNew={false}
+										itemCollection={itemCollection}
+										setItemCollection={(collection) => {
+											setItemCollection(collection);
+											updateCollection(collection);
+										}}
+										value={itemCollection.oldItems[index]}
+									/>
+								</View>
+								<FlatList
+									CellRendererComponent={({ children }) => (
+										<View
+											style={{
+												flex: 1,
+												alignItems: "center",
+												justifyContent: "center"
+											}}
+											children={children}
+										/>
+									)}
+									contentContainerStyle={{
+										backgroundColor: COLORS.mediumBlue,
+										flex: 1
+									}}
+									data={itemCollection.oldItems}
+									keyExtractor={(item) => item}
+									renderItem={({ item }) => (
+										<Text
+											style={{
+												color: COLORS.lightBlue,
+												fontSize: 16,
+												fontWeight: "bold",
+												textAlign: "center"
+											}}
+										>
+											{item}
+										</Text>
+									)}
+								/>
+							</View>
 						)
 					) : (
 						<Text style={[styles.oldText, { fontSize: 24 }]}>
