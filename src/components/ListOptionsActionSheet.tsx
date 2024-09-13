@@ -4,17 +4,22 @@ import { COLORS } from "../styles/colors";
 import ItemCollection from "../models/ItemCollection";
 import { useState } from "react";
 import EditListNameModal from "./modals/EditListNameModal";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type ListOptionsActionSheetProps = {
 	actionSheetRef: React.RefObject<ActionSheetRef>;
+	collections: ItemCollection[];
 	currentCollection: ItemCollection;
+	setCollections: (a: ItemCollection[]) => void;
 	setCurrentCollection: (a: ItemCollection) => void;
 	updateCollection: (a: ItemCollection) => void;
 };
 
 const ListOptionsActionSheet: React.FC<ListOptionsActionSheetProps> = ({
 	actionSheetRef,
+	collections,
 	currentCollection,
+	setCollections,
 	setCurrentCollection,
 	updateCollection
 }) => {
@@ -33,7 +38,32 @@ const ListOptionsActionSheet: React.FC<ListOptionsActionSheetProps> = ({
 				>
 					<Text style={styles.option}>Edit List Name</Text>
 				</TouchableOpacity>
-				<TouchableOpacity onPress={() => console.log("Delete list")}>
+				<TouchableOpacity
+					onPress={async () => {
+						const collectionsClone = [...collections];
+						const index = collectionsClone.findIndex(
+							(collection) =>
+								collection.id === currentCollection.id
+						);
+
+						if(index >= 0){
+							collectionsClone.splice(index, 1);
+						}
+
+						try {
+							await AsyncStorage.setItem(
+								"collections",
+								JSON.stringify(collectionsClone)
+							);
+							setCollections(collectionsClone);
+						} catch (error) {
+							console.error(
+								"Something went wrong deleting collection:",
+								error
+							);
+						}
+					}}
+				>
 					<Text style={styles.option}>Delete List</Text>
 				</TouchableOpacity>
 				<TouchableOpacity
